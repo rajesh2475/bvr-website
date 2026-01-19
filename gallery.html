@@ -10,7 +10,10 @@
 <body>
 
 <header class="navbar">
-  <h1>BVR International CBSE School</h1>
+  <div class="navbar-brand">
+    <img src="images/logo.JPG" alt="BVR Logo" class="logo">
+    <h1>BVR International CBSE School</h1>
+  </div>
   <nav>
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
@@ -27,19 +30,147 @@
 </section>
 
 <section class="section light">
-  <div class="gallery-grid">
-    <div class="card">Campus View</div>
-    <div class="card">Classrooms</div>
-    <div class="card">Laboratories</div>
-    <div class="card">Sports Activities</div>
-    <div class="card">Cultural Events</div>
-    <div class="card">Celebrations</div>
+  <div class="gallery-tabs">
+    <button class="tab-btn active" data-category="campus">Campus View</button>
+    <button class="tab-btn" data-category="classrooms">Classrooms</button>
+    <button class="tab-btn" data-category="laboratories">Laboratories</button>
+    <button class="tab-btn" data-category="sports">Sports Activities</button>
+    <button class="tab-btn" data-category="cultural">Cultural Events</button>
+    <button class="tab-btn" data-category="celebrations">Celebrations</button>
+  </div>
+
+  <div class="gallery-content">
+    <!-- Campus View -->
+    <div class="gallery-category active" id="campus">
+      <div class="carousel">
+        <img src="images/campus.jpg" alt="Campus View 1" class="carousel-image">
+        <img src="images/campus_1.jpg" alt="Campus View 2" class="carousel-image">
+        <img src="images/campus_2.jpg" alt="Campus View 3" class="carousel-image">
+        <img src="images/campus_3.jpg" alt="Campus View 4" class="carousel-image">
+        <img src="images/campus_4.jpg" alt="Campus View 5" class="carousel-image">
+      </div>
+    </div>
+
+    <!-- Classrooms -->
+    <div class="gallery-category" id="classrooms">
+      <div class="carousel">
+        <img src="images/classrooms.jpg" alt="Classrooms 1" class="carousel-image">
+        <img src="images/classrooms_1.jpg" alt="Classrooms 2" class="carousel-image">
+        <img src="images/classrooms_2.jpg" alt="Classrooms 3" class="carousel-image">
+      </div>
+    </div>
+
+    <!-- Laboratories -->
+    <div class="gallery-category" id="laboratories">
+      <div class="carousel">
+        <img src="images/laboratories.jpg" alt="Laboratories 1" class="carousel-image">
+        <img src="images/laboratories_1.jpg" alt="Laboratories 2" class="carousel-image">
+        <img src="images/laboratories_2.jpg" alt="Laboratories 3" class="carousel-image">
+      </div>
+    </div>
+
+    <!-- Sports Activities -->
+    <div class="gallery-category" id="sports">
+      <div class="carousel">
+        <img src="images/sports.jpg" alt="Sports 1" class="carousel-image">
+        <img src="images/sports_1.jpg" alt="Sports 2" class="carousel-image">
+        <img src="images/sports_2.jpg" alt="Sports 3" class="carousel-image">
+      </div>
+    </div>
+
+    <!-- Cultural Events -->
+    <div class="gallery-category" id="cultural">
+      <div class="carousel">
+        <img src="images/cultural.jpg" alt="Cultural 1" class="carousel-image">
+        <img src="images/cultural_1.jpg" alt="Cultural 2" class="carousel-image">
+        <img src="images/cultural_2.jpg" alt="Cultural 3" class="carousel-image">
+      </div>
+    </div>
+
+    <!-- Celebrations -->
+    <div class="gallery-category" id="celebrations">
+      <div class="carousel">
+        <img src="images/celebrations.jpg" alt="Celebrations 1" class="carousel-image">
+        <img src="images/celebrations_1.jpg" alt="Celebrations 2" class="carousel-image">
+        <img src="images/celebrations_2.jpg" alt="Celebrations 3" class="carousel-image">
+      </div>
+    </div>
   </div>
 </section>
 
 <footer>
   <p>© 2026 BVR International CBSE School, Manvi</p>
 </footer>
+
+<script>
+// Tab switching and carousel functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const categories = document.querySelectorAll('.gallery-category');
+  let carouselIntervals = {};
+
+  // Initialize carousels for all categories
+  categories.forEach(category => {
+    const carouselImages = category.querySelectorAll('.carousel-image');
+    if (carouselImages.length > 0) {
+      carouselImages[0].classList.add('active');
+    }
+  });
+
+  // Tab button click handler
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const categoryId = this.getAttribute('data-category');
+      
+      // Remove active class from all tabs and categories
+      tabButtons.forEach(b => b.classList.remove('active'));
+      categories.forEach(cat => cat.classList.remove('active'));
+      
+      // Add active class to clicked tab and corresponding category
+      this.classList.add('active');
+      document.getElementById(categoryId).classList.add('active');
+      
+      // Start/restart carousel for this category
+      startCarouselForCategory(categoryId);
+    });
+  });
+
+  function startCarouselForCategory(categoryId) {
+    const category = document.getElementById(categoryId);
+    const carouselImages = category.querySelectorAll('.carousel-image');
+    
+    if (carouselImages.length === 0) return;
+
+    // Clear existing interval if any
+    if (carouselIntervals[categoryId]) {
+      clearInterval(carouselIntervals[categoryId]);
+    }
+
+    let currentIndex = 0;
+
+    function showImage(index) {
+      carouselImages.forEach(img => img.classList.remove('active'));
+      if (carouselImages[index]) {
+        carouselImages[index].classList.add('active');
+      }
+    }
+
+    function showNextImage() {
+      currentIndex = (currentIndex + 1) % carouselImages.length;
+      showImage(currentIndex);
+    }
+
+    // Show first image
+    showImage(0);
+    
+    // Start rotation every 3 seconds
+    carouselIntervals[categoryId] = setInterval(showNextImage, 3000);
+  }
+
+  // Start carousel for default active category (campus)
+  startCarouselForCategory('campus');
+});
+</script>
 
 </body>
 </html>
